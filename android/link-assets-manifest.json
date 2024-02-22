@@ -1,0 +1,17 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Anta-Regular.ttf",
+      "sha1": "e3e740580b8ba422bd33c18e18a00ac684a1553a"
+    },
+    {
+      "path": "assets/fonts/Baloo Bhaijaan 2.ttf",
+      "sha1": "b5f398de904c506d5c755e59ce0eac6e686884c3"
+    },
+    {
+      "path": "assets/fonts/Bungee.ttf",
+      "sha1": "95b7defc8e5c59b08c23e6f971d866801ca21cfd"
+    }
+  ]
+}

@@ -1,26 +1,14 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect } from 'react'
 import { getData } from '../helper/getData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Navbar from '../../components/Navbar';
 
 const HomeScreen = () => {
-
-    useEffect(() => {
-        const getAData = async () => {
-            try {
-                const token = await AsyncStorage.getItem("token")
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        getAData();
-
-    }, [])
-
     return (
-        <View>
-            <Text>HomeScreen</Text>
-        </View>
+        <SafeAreaView>
+            <Navbar firstIconName="menu" lastIconName="shopping-cart" />
+        </SafeAreaView>
     )
 }
 
