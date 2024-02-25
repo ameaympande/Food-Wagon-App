@@ -81,7 +81,7 @@ const Login = () => {
                 if (response.data.userId) dispatch(setUserId(response.data.userId));
                 dispatch(setEmail(credentials.email));
                 await AsyncStorage.setItem("token", response.data.token)
-                navigation.replace("Home");
+                navigation.replace("BottomTabNavigator");
             }
         } catch (error) {
             console.error("Login failed:", error);

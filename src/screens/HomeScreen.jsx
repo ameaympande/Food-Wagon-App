@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
-import { FlatList, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FlatList, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Navbar from '../../components/Navbar';
+import BottomTabNaviagtor from '../navigation/BottomTabNavigator';
+import PopularItem from '../../components/PopularItem';
+import { GetMenuAPI } from '../api/GetMenuAPI';
 
 const data = [
     { id: 1, name: "Meals" },
@@ -12,7 +15,9 @@ const data = [
 ];
 
 const HomeScreen = () => {
-    const [selectedItem, setSelectedItem] = useState(null);
+    const [selectedItem, setSelectedItem] = useState(data[0]?.id);
+    const [popularItemData, setPopularItemData] = useState(null)
+
 
     const renderItem = ({ item }) => (
         <TouchableOpacity
@@ -25,6 +30,25 @@ const HomeScreen = () => {
             <Text style={styles.cardText}>{item.name}</Text>
         </TouchableOpacity>
     );
+
+    useEffect(() => {
+        getRestaurantData();
+    }, []);
+
+    async function getRestaurantData() {
+        try {
+            const response = await GetMenuAPI();
+            if (response) {
+                console.log(response);
+                setPopularItemData(response);
+            } else {
+                console.error("Invalid response from API:", response);
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    }
+
 
     return (
         <SafeAreaView style={styles.container}>
@@ -48,6 +72,13 @@ const HomeScreen = () => {
                     showsHorizontalScrollIndicator={false}
                 />
             </View>
+            <View style={styles.pcontainer}>
+                <Text style={styles.mainLabel}>Popular Items</Text>
+                <Text style={styles.Label}>SEE FULL MENU </Text>
+            </View >
+            {popularItemData ?
+                <PopularItem data={popularItemData} /> : <ActivityIndicator size="large" />
+            }
         </SafeAreaView>
     );
 }
@@ -124,11 +155,31 @@ const styles = StyleSheet.create({
         backgroundColor: "orange",
     },
     cardText: {
+        color: "black",
         fontSize: 17,
         padding: 3,
         fontFamily: "Poppins-Regular",
         fontWeight: "bold",
-    }
+    },
+    pcontainer: {
+        flexDirection: "row",
+        justifyContent: "space-between"
+
+    },
+    mainLabel: {
+        marginTop: 10,
+        fontFamily: "Poppins-Bold",
+        fontSize: 20,
+        padding: 15,
+        color: "black"
+    },
+    Label: {
+        marginTop: 15,
+        fontFamily: "Poppins-Regular",
+        fontSize: 16,
+        padding: 15,
+        color: "orange"
+    },
 });
 
 export default HomeScreen;

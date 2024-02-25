@@ -4,7 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import GetStartedScreen from '../screens/GetStartedScreen';
 import Login from '../screens/Login';
 import SignUp from '../screens/SignUp';
-import HomeScreen from '../screens/HomeScreen';
+import BottomTabNavigator from './BottomTabNavigator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createStackNavigator();
@@ -22,7 +22,7 @@ const AppNavigator = () => {
         } else {
           const token = await AsyncStorage.getItem('token');
           if (token) {
-            setInitialRouteName('Home');
+            setInitialRouteName('BottomTabNavigator');
           } else {
             setInitialRouteName('Login');
           }
@@ -42,16 +42,21 @@ const AppNavigator = () => {
   }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName={initialRouteName}
-        screenOptions={{headerShown: false}}>
-        <Stack.Screen name="Getstarted" component={GetStartedScreen} />
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Signup" component={SignUp} />
-        <Stack.Screen name="Home" component={HomeScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <>
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName={initialRouteName}
+          screenOptions={{headerShown: false}}>
+          <Stack.Screen name="Getstarted" component={GetStartedScreen} />
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Signup" component={SignUp} />
+          <Stack.Screen
+            name="BottomTabNavigator"
+            component={BottomTabNavigator}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </>
   );
 };
 

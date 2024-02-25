@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios from 'axios';
 
-export const LoginAPI = async (form) => {
-  const { email, password } = form;
-  const url = "https://food-wagon-server.onrender.com/";
+export const LoginAPI = async form => {
+  const {email, password} = form;
+  const url = 'https://food-wagon-server.onrender.com/';
 
   try {
     const body = {
@@ -10,7 +10,7 @@ export const LoginAPI = async (form) => {
       password: password,
     };
 
-    const response = await axios.post(url + "login", body);
+    const response = await axios.post(url + 'login', body);
 
     if (response && response.status === 200) {
       return response.data;
@@ -18,6 +18,6 @@ export const LoginAPI = async (form) => {
       throw new Error(response.data.error);
     }
   } catch (err) {
-    return err.response || "An error occurred during login.";
+    return err.response || 'An error occurred during login.';
   }
 };
