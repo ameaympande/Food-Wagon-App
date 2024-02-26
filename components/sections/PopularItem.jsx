@@ -53,7 +53,6 @@ const styles = StyleSheet.create({
     },
     priceText: {
         color: "black",
-        // marginTop: ,
         fontSize: 18,
         fontFamily: "Poppins-Bold"
     }

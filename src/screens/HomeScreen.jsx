@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { FlatList, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Navbar from '../../components/Navbar';
-import BottomTabNaviagtor from '../navigation/BottomTabNavigator';
-import PopularItem from '../../components/PopularItem';
+import PopularItem from '../../components/sections/PopularItem';
 import { GetMenuAPI } from '../api/GetMenuAPI';
+import SpecialOfferSection from '../../components/sections/SpecialOfferSection';
 
 const data = [
     { id: 1, name: "Meals" },
@@ -39,7 +39,6 @@ const HomeScreen = () => {
         try {
             const response = await GetMenuAPI();
             if (response) {
-                console.log(response);
                 setPopularItemData(response);
             } else {
                 console.error("Invalid response from API:", response);
@@ -52,33 +51,41 @@ const HomeScreen = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Navbar firstIconName="menu" lastIconName="shopping-cart" />
-            <View style={styles.content}>
-                <Text style={styles.title}>What would you like to <Text style={styles.orangeText}>eat?</Text></Text>
-                <View style={styles.inputContainer}>
-                    <TextInput style={styles.input} placeholder='Enter a dish name E.g Pizza' />
-                    <View style={styles.searchIconContainer}>
-                        <Icon style={styles.searchIcon} name="search1" size={38} />
+            <ScrollView alwaysBounceVertical={true} automaticallyAdjustKeyboardInsets={true} keyboardDismissMode="on-drag">
+                <Navbar firstIconName="menu" lastIconName="shopping-cart" />
+                <View style={styles.content}>
+                    <Text style={styles.title}>What would you like to <Text style={styles.orangeText}>eat?</Text></Text>
+                    <View style={styles.inputContainer}>
+                        <TextInput style={styles.input} placeholder='Enter a dish name E.g Pizza' />
+                        <View style={styles.searchIconContainer}>
+                            <Icon style={styles.searchIcon} name="search1" size={38} />
+                        </View>
+                    </View>
+                    <View style={styles.breakline} />
+                </View>
+                <View style={styles.bottomContentContainer}>
+                    <FlatList
+                        data={data}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item.id.toString()}
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}
+                    />
+                </View>
+                <View>
+                    <Text style={styles.mainLabel}>Today's Special Offer</Text>
+                    <View style={{ alignItems: "center", padding: 10, }}>
+                        <SpecialOfferSection />
                     </View>
                 </View>
-                <View style={styles.breakline} />
-            </View>
-            <View style={styles.bottomContentContainer}>
-                <FlatList
-                    data={data}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item.id.toString()}
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                />
-            </View>
-            <View style={styles.pcontainer}>
-                <Text style={styles.mainLabel}>Popular Items</Text>
-                <Text style={styles.Label}>SEE FULL MENU </Text>
-            </View >
-            {popularItemData ?
-                <PopularItem data={popularItemData} /> : <ActivityIndicator size="large" />
-            }
+                <View style={styles.pcontainer}>
+                    <Text style={styles.mainLabel}>Popular Items</Text>
+                    <Text style={styles.Label}>SEE FULL MENU </Text>
+                </View >
+                {popularItemData ?
+                    <PopularItem data={popularItemData} /> : <ActivityIndicator size="large" />
+                }
+            </ScrollView>
         </SafeAreaView>
     );
 }
@@ -90,7 +97,7 @@ const styles = StyleSheet.create({
     },
     content: {
         alignItems: 'center',
-        padding: 30,
+        padding: 20,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
