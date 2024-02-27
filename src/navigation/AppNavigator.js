@@ -6,6 +6,7 @@ import Login from '../screens/Login';
 import SignUp from '../screens/SignUp';
 import BottomTabNavigator from './BottomTabNavigator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import DrawerNavigator from './DrawerNavigator';
 
 const Stack = createStackNavigator();
 const AppNavigator = () => {
@@ -54,6 +55,7 @@ const AppNavigator = () => {
             name="BottomTabNavigator"
             component={BottomTabNavigator}
           />
+          <Stack.Screen name="DrawerNavigator" component={DrawerNavigator} />
         </Stack.Navigator>
       </NavigationContainer>
     </>
