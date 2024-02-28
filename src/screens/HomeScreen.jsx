@@ -6,6 +6,8 @@ import PopularItem from '../../components/sections/PopularItem';
 import { GetMenuAPI } from '../api/GetMenuAPI';
 import SpecialOfferSection from '../../components/sections/SpecialOfferSection';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSelector } from 'react-redux';
 
 const data = [
     { id: 1, name: "Meals" },
@@ -16,6 +18,7 @@ const data = [
 ];
 
 const HomeScreen = () => {
+    const profile = useSelector((state) => state.profile)
     const navigation = useNavigation();
     const [selectedItem, setSelectedItem] = useState(data[0]?.id);
     const [popularItemData, setPopularItemData] = useState(null)
@@ -35,8 +38,14 @@ const HomeScreen = () => {
 
     useEffect(() => {
         getRestaurantData();
+        getData()
     }, []);
 
+    const getData = async () => {
+        const data = await AsyncStorage.getItem("reduxState");
+        console.log("data", data);
+        console.log("profile", profile);
+    }
     async function getRestaurantData() {
         try {
             const response = await GetMenuAPI();

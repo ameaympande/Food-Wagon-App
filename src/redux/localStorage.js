@@ -1,8 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const loadState = () => {
+export const loadState = async () => {
   try {
-    const serializedState = AsyncStorage.getItem('reduxState');
+    const serializedState = await AsyncStorage.getItem('reduxState');
     if (serializedState === null) {
       return undefined;
     }
@@ -12,10 +12,10 @@ export const loadState = () => {
   }
 };
 
-export const saveState = state => {
+export const saveState = async state => {
   try {
     const serializedState = JSON.stringify(state);
-    AsyncStorage.setItem('reduxState', serializedState);
+    await AsyncStorage.setItem('reduxState', serializedState);
   } catch (err) {
     console.error('savestate error ' + err);
   }

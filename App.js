@@ -6,6 +6,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import {NavigationContainer} from '@react-navigation/native';
 import Login from './src/screens/Login';
 import DrawerContent from './src/navigation/DrawerContent';
+import initializeStore from './src/redux/store';
 import store from './src/redux/store';
 
 const DrawerNav = () => {
@@ -23,6 +24,20 @@ const DrawerNav = () => {
 };
 
 const App = () => {
+  const [store, setStore] = useState(null);
+
+  useEffect(() => {
+    const setupStore = async () => {
+      const store = await initializeStore();
+      setStore(store);
+    };
+
+    setupStore();
+  }, []);
+
+  if (!store) {
+    return null;
+  }
   return (
     <>
       <Provider store={store}>

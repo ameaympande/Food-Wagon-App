@@ -24,8 +24,6 @@ const DrawerContent = () => {
     const navigation = useNavigation();
     const profile = useSelector((state) => state.profile);
 
-    console.log(profile)
-
     const handleNavigation = async (navigateTo) => {
         if (navigateTo === "Logout") {
             await clearAsyncStorage();
