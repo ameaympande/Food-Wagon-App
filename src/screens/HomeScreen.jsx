@@ -5,6 +5,7 @@ import Navbar from '../../components/Navbar';
 import PopularItem from '../../components/sections/PopularItem';
 import { GetMenuAPI } from '../api/GetMenuAPI';
 import SpecialOfferSection from '../../components/sections/SpecialOfferSection';
+import { useNavigation } from '@react-navigation/native';
 
 const data = [
     { id: 1, name: "Meals" },
@@ -15,6 +16,7 @@ const data = [
 ];
 
 const HomeScreen = () => {
+    const navigation = useNavigation();
     const [selectedItem, setSelectedItem] = useState(data[0]?.id);
     const [popularItemData, setPopularItemData] = useState(null)
 
@@ -47,12 +49,10 @@ const HomeScreen = () => {
             console.error("Error fetching data:", error);
         }
     }
-
-
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView alwaysBounceVertical={true} automaticallyAdjustKeyboardInsets={true} keyboardDismissMode="on-drag">
-                <Navbar firstIconName="menu" lastIconName="shopping-cart" />
+                <Navbar firstIconName="bars" lastIconName="shoppingcart" cartCount={5} leftHandle={() => navigation.toggleDrawer()} />
                 <View style={styles.content}>
                     <Text style={styles.title}>What would you like to <Text style={styles.orangeText}>eat?</Text></Text>
                     <View style={styles.inputContainer}>
@@ -83,7 +83,7 @@ const HomeScreen = () => {
                     <Text style={styles.Label}>SEE FULL MENU </Text>
                 </View >
                 {popularItemData ?
-                    <PopularItem data={popularItemData} /> : <ActivityIndicator size="large" />
+                    <PopularItem data={popularItemData} navigation={navigation} /> : <ActivityIndicator size="large" />
                 }
             </ScrollView>
         </SafeAreaView>
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     },
     content: {
         alignItems: 'center',
-        padding: 20,
+        padding: 8,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
         fontFamily: "Poppins-Bold",
         fontSize: 30,
         color: "black",
-        marginBottom: 20,
+        marginBottom: 10,
     },
     orangeText: {
         color: "orange",
@@ -119,7 +119,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 20,
         paddingHorizontal: 10,
-        paddingTop: 5,
         height: 60,
         backgroundColor: 'white',
     },
@@ -136,7 +135,7 @@ const styles = StyleSheet.create({
         color: 'orange',
     },
     breakline: {
-        marginTop: 25,
+        marginTop: "5%",
         width: "150%",
         height: 3,
         backgroundColor: "grey"
@@ -144,7 +143,7 @@ const styles = StyleSheet.create({
     bottomContentContainer: {
         backgroundColor: 'white',
         justifyContent: 'flex-start',
-        paddingHorizontal: 20,
+        paddingHorizontal: 10,
         maxHeight: 250
     },
     card: {
@@ -158,7 +157,7 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 7 },
         shadowOpacity: 8,
         shadowRadius: 8,
-        marginBottom: 10,
+        marginBottom: 5,
     },
     selectedCard: {
         backgroundColor: "orange",
@@ -176,14 +175,13 @@ const styles = StyleSheet.create({
 
     },
     mainLabel: {
-        marginTop: 10,
         fontFamily: "Poppins-Bold",
         fontSize: 20,
         padding: 15,
         color: "black"
     },
     Label: {
-        marginTop: 15,
+        marginTop: 5,
         fontFamily: "Poppins-Regular",
         fontSize: 16,
         padding: 15,

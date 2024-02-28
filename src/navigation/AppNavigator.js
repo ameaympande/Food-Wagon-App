@@ -1,14 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {NavigationContainer} from '@react-navigation/native';
 import GetStartedScreen from '../screens/GetStartedScreen';
 import Login from '../screens/Login';
 import SignUp from '../screens/SignUp';
 import BottomTabNavigator from './BottomTabNavigator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import DrawerNavigator from './DrawerNavigator';
+import Cart from '../screens/Cart';
+import ProductDetail from '../screens/ProductDetail';
 
 const Stack = createStackNavigator();
+
 const AppNavigator = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [initialRouteName, setInitialRouteName] = useState('Getstarted');
@@ -34,7 +35,6 @@ const AppNavigator = () => {
         setIsLoading(false);
       }
     }
-
     checkLaunchAndToken();
   }, []);
 
@@ -44,20 +44,20 @@ const AppNavigator = () => {
 
   return (
     <>
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName={initialRouteName}
-          screenOptions={{headerShown: false}}>
-          <Stack.Screen name="Getstarted" component={GetStartedScreen} />
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Signup" component={SignUp} />
-          <Stack.Screen
-            name="BottomTabNavigator"
-            component={BottomTabNavigator}
-          />
-          <Stack.Screen name="DrawerNavigator" component={DrawerNavigator} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <Stack.Navigator
+        initialRouteName={initialRouteName}
+        screenOptions={{headerShown: false}}>
+        <Stack.Screen name="Getstarted" component={GetStartedScreen} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Signup" component={SignUp} />
+        <Stack.Screen name="Cart" component={Cart} />
+        <Stack.Screen name="ProductDetail" component={ProductDetail} />
+        <Stack.Screen
+          name="BottomTabNavigator"
+          component={BottomTabNavigator}
+        />
+        {/* <Stack.Screen name="Logout" component={LogoutScreen} /> */}
+      </Stack.Navigator>
     </>
   );
 };

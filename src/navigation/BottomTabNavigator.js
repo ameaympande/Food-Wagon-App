@@ -10,10 +10,12 @@ const Tab = createBottomTabNavigator();
 const BottomTabNavigator = () => {
   return (
     <Tab.Navigator
+      initialRouteName="Home"
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: 'orange',
         tabBarInactiveTintColor: 'gray',
+
         tabBarStyle: {
           display: 'flex',
         },

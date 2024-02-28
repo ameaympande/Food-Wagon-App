@@ -1,28 +1,33 @@
-import { FlatList, Image, StyleSheet, Text, View } from 'react-native'
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 
+export default function PopularItem({ data, navigation }) {
+    const handlePress = (item) => {
+        navigation.navigate("ProductDetail", { item: item });
+    };
 
-const renderItem = ({ item }) => (
-    <View style={styles.card}>
-        <View style={styles.cardContent}>
-            <Image source={{ uri: item.backgroundImage }} style={styles.image} />
-            <Text style={styles.nameText}> {item.name}</Text>
-            <Text style={styles.priceText}>₹ {item.price}</Text>
+    const renderItem = ({ item }) => (
+        <View style={styles.card}>
+            <TouchableOpacity onPress={() => handlePress(item)}>
+                <View style={styles.cardContent}>
+                    <Image source={{ uri: item.backgroundImage }} style={styles.image} />
+                    <Text style={styles.nameText}>{item.name}</Text>
+                    <Text style={styles.priceText}>₹ {item.price}</Text>
+                </View>
+            </TouchableOpacity>
         </View>
-    </View>
-);
-export default function PopularItem({ data }) {
+    );
+
     return (
-        <>
-            <FlatList
-                data={data}
-                renderItem={renderItem}
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-            />
-        </>
-    )
+        <FlatList
+            data={data}
+            renderItem={renderItem}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+        />
+    );
 }
+
 
 const styles = StyleSheet.create({
     card: {
