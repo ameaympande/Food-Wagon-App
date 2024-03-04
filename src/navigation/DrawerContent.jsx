@@ -29,8 +29,9 @@ const DrawerContent = () => {
             await clearAsyncStorage();
             navigation.navigate("Login");
 
+        } else {
+            navigation.navigate(navigateTo);
         }
-        navigation.navigate(navigateTo);
     };
 
     return (

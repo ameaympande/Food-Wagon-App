@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
+import { FlatList, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, ActivityIndicator, ScrollView, StatusBar } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Navbar from '../../components/Navbar';
 import PopularItem from '../../components/sections/PopularItem';
@@ -60,6 +60,7 @@ const HomeScreen = () => {
     }
     return (
         <SafeAreaView style={styles.container}>
+            <StatusBar backgroundColor="white" barStyle="dark-content" />
             <ScrollView alwaysBounceVertical={true} automaticallyAdjustKeyboardInsets={true} keyboardDismissMode="on-drag">
                 <Navbar firstIconName="bars" lastIconName="shoppingcart" cartCount={5} leftHandle={() => navigation.toggleDrawer()} />
                 <View style={styles.content}>
