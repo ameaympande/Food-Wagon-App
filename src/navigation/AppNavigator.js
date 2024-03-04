@@ -12,7 +12,7 @@ const Stack = createStackNavigator();
 
 const AppNavigator = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [initialRouteName, setInitialRouteName] = useState('Getstarted');
+  const [initialRouteName, setInitialRouteName] = useState('Login');
 
   useEffect(() => {
     async function checkLaunchAndToken() {

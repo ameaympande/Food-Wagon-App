@@ -7,7 +7,6 @@ import {NavigationContainer} from '@react-navigation/native';
 import Login from './src/screens/Login';
 import DrawerContent from './src/navigation/DrawerContent';
 import initializeStore from './src/redux/store';
-import store from './src/redux/store';
 
 const DrawerNav = () => {
   const Drawer = createDrawerNavigator();
@@ -41,7 +40,10 @@ const App = () => {
   return (
     <>
       <Provider store={store}>
-        <DrawerNav />
+        {/* <DrawerNav /> */}
+        <NavigationContainer>
+          <AppNavigator />
+        </NavigationContainer>
       </Provider>
     </>
   );
