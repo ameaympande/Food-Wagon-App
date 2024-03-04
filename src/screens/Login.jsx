@@ -27,7 +27,7 @@ const Login = () => {
         try {
             const token = await AsyncStorage.getItem("token")
             if (token) {
-                navigation.replace("home");
+                navigation.replace("drawer");
             }
         } catch (error) {
             console.log(error);

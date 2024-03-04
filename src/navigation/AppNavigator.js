@@ -56,7 +56,6 @@ const AppNavigator = () => {
           name="BottomTabNavigator"
           component={BottomTabNavigator}
         />
-        {/* <Stack.Screen name="Logout" component={LogoutScreen} /> */}
       </Stack.Navigator>
     </>
   );
