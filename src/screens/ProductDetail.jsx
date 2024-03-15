@@ -3,20 +3,25 @@ import React, { useState } from 'react';
 import Navbar from '../../components/Navbar';
 import StarRating from '../../components/StartRating';
 import { useNavigation } from '@react-navigation/native';
+import { setCartItems } from '../redux/features/profile/profileSlice';
+import { useDispatch } from 'react-redux';
 
 export default function ProductDetail({ route }) {
+    const dispatch = useDispatch()
     const navigation = useNavigation()
     const { item } = route.params;
-    const [count, setCount] = useState(1);
+    const [count, setCount] = useState(0);
 
     const handleIncrement = () => {
         setCount(prevCount => prevCount + 1);
+        dispatch(setCartItems(item));
     };
 
     const handleDecrement = () => {
+        console.log(count);
+        if (count <= 0) return;
         setCount(prevCount => prevCount - 1);
     };
-    console.log("data", item);
 
     return (
         <View>
@@ -55,7 +60,6 @@ export default function ProductDetail({ route }) {
 
 const styles = StyleSheet.create({
     breakline: {
-        marginTop: 25,
         width: "150%",
         height: 3,
         backgroundColor: "grey"

@@ -31,6 +31,7 @@ export default function Navbar({ firstIconName, labelName, lastIconName, leftHan
 
 const styles = StyleSheet.create({
     container: {
+        marginTop: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
         padding: 10,

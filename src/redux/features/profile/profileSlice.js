@@ -1,17 +1,24 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {createSlice} from '@reduxjs/toolkit';
 
 export const profileSlice = createSlice({
-  name: "profile",
+  name: 'profile',
   initialState: {
-    userId: "",
-    email: "",
-    firstName: "",
-    lastName: "",
-    phoneNumber: "",
-    address: "",
-    roles: "customer",
+    cartItems: [],
+    userId: '',
+    email: '',
+    firstName: '',
+    lastName: '',
+    phoneNumber: '',
+    address: '',
+    roles: 'customer',
   },
   reducers: {
+    setCartItems: (state, action) => {
+      state.cartItems.push(action.payload);
+    },
+    replaceCartItems: (state, action) => {
+      state.cartItems = action.payload;
+    },
     setUserId: (state, action) => {
       state.userId = action.payload;
     },
@@ -37,6 +44,8 @@ export const profileSlice = createSlice({
 });
 
 export const {
+  replaceCartItems,
+  setCartItems,
   setUserId,
   setEmail,
   setFirstName,
@@ -46,6 +55,6 @@ export const {
   setRoles,
 } = profileSlice.actions;
 
-export const selectProfile = (state) => state.profile;
+export const selectProfile = state => state.profile;
 
 export default profileSlice.reducer;

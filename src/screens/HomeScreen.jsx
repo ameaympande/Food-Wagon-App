@@ -62,7 +62,7 @@ const HomeScreen = () => {
         <SafeAreaView style={styles.container}>
             <StatusBar backgroundColor="white" barStyle="dark-content" />
             <ScrollView alwaysBounceVertical={true} automaticallyAdjustKeyboardInsets={true} keyboardDismissMode="on-drag">
-                <Navbar firstIconName="bars" lastIconName="shoppingcart" cartCount={5} leftHandle={() => navigation.toggleDrawer()} />
+                <Navbar firstIconName="bars" lastIconName="shoppingcart" cartCount={profile.cartItems.length} leftHandle={() => navigation.toggleDrawer()} />
                 <View style={styles.content}>
                     <Text style={styles.title}>What would you like to <Text style={styles.orangeText}>eat?</Text></Text>
                     <View style={styles.inputContainer}>
