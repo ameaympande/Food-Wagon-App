@@ -62,13 +62,13 @@ const HomeScreen = () => {
         <SafeAreaView style={styles.container}>
             <StatusBar backgroundColor="white" barStyle="dark-content" />
             <ScrollView alwaysBounceVertical={true} automaticallyAdjustKeyboardInsets={true} keyboardDismissMode="on-drag">
-                <Navbar firstIconName="bars" lastIconName="shoppingcart" cartCount={5} leftHandle={() => navigation.toggleDrawer()} />
+                <Navbar firstIconName="bars" lastIconName="shoppingcart" cartCount={profile.cartItems.length} leftHandle={() => navigation.toggleDrawer()} />
                 <View style={styles.content}>
                     <Text style={styles.title}>What would you like to <Text style={styles.orangeText}>eat?</Text></Text>
                     <View style={styles.inputContainer}>
                         <TextInput style={styles.input} placeholder='Enter a dish name E.g Pizza' />
                         <View style={styles.searchIconContainer}>
-                            <Icon style={styles.searchIcon} name="search1" size={38} />
+                            <Icon style={styles.searchIcon} name="search1" size={32} />
                         </View>
                     </View>
                     <View style={styles.breakline} />
@@ -129,10 +129,11 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 20,
         paddingHorizontal: 10,
-        height: 60,
+        height: 50,
         backgroundColor: 'white',
     },
     input: {
+        padding: 10,
         flex: 1,
         fontFamily: "Baloo Bhaijaan 2",
         fontSize: 20,
@@ -158,8 +159,8 @@ const styles = StyleSheet.create({
     },
     card: {
         marginRight: 10,
-        padding: 8,
-        paddingHorizontal: 12,
+        padding: 5,
+        paddingHorizontal: 10,
         backgroundColor: "white",
         borderRadius: 15,
         elevation: 6,

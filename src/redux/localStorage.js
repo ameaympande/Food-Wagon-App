@@ -4,7 +4,7 @@ export const loadState = async () => {
   try {
     const serializedState = await AsyncStorage.getItem('reduxState');
     if (serializedState === null) {
-      return '';
+      return {};
     }
     return JSON.parse(serializedState);
   } catch (err) {
