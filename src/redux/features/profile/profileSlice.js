@@ -14,7 +14,13 @@ export const profileSlice = createSlice({
   },
   reducers: {
     setCartItems: (state, action) => {
-      state.cartItems.push(action.payload);
+      const {_id} = action.payload;
+      const existingItem = state.cartItems.find(item => item._id === _id);
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        state.cartItems.push({...action.payload, quantity: 1});
+      }
     },
     replaceCartItems: (state, action) => {
       state.cartItems = action.payload;

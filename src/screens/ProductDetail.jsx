@@ -1,30 +1,39 @@
 import { Image, ScrollView, StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../../components/Navbar';
 import StarRating from '../../components/StartRating';
 import { useNavigation } from '@react-navigation/native';
 import { setCartItems } from '../redux/features/profile/profileSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function ProductDetail({ route }) {
+    const profile = useSelector((state) => state.profile);
+    const cartItems = profile.cartItems;
     const dispatch = useDispatch()
     const navigation = useNavigation()
     const { item } = route.params;
     const [count, setCount] = useState(0);
 
+    useEffect(() => {
+        const filterItem = cartItems.find((rec) => item._id === rec._id)
+        if (filterItem) setCount(filterItem.quantity)
+    }, [cartItems, count])
+
     const handleIncrement = () => {
         setCount(prevCount => prevCount + 1);
-        dispatch(setCartItems(item));
+        dispatch(setCartItems(item))
     };
 
     const handleDecrement = () => {
-        console.log(count);
         if (count <= 0) return;
+        const exist = cartItems.filter((dish) => dish._id === item._id);
+        console.log("exist", exist);
         setCount(prevCount => prevCount - 1);
     };
 
+
     return (
-        <View>
+        <View style={{ flex: 1 }}>
             <ScrollView alwaysBounceVertical={true} automaticallyAdjustKeyboardInsets={true} keyboardDismissMode="on-drag">
                 <Navbar styles={styles.navbar} firstIconName="arrowleft" lastIconName="questioncircleo" labelName="  " leftHandle={() => navigation.goBack()} />
                 <View style={styles.breakline} />
@@ -54,8 +63,14 @@ export default function ProductDetail({ route }) {
                     <Text style={styles.descriptionBody}>{item.description}</Text>
                 </View>
             </ScrollView>
+            {count > 0 && (
+                <TouchableOpacity onPress={() => navigation.navigate("Cart")} style={styles.checkoutButton}>
+                    <Text style={styles.checkoutButtonText}>Go to Cart</Text>
+                </TouchableOpacity>
+            )}
         </View>
     );
+
 }
 
 const styles = StyleSheet.create({
@@ -133,5 +148,31 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "bold",
         color: "black"
+    },
+    checkoutContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 0,
+    },
+    checkoutButton: {
+        marginHorizontal: "15%",
+        marginBottom: 20,
+        backgroundColor: "orange",
+        paddingHorizontal: 10,
+        paddingVertical: 12,
+        borderRadius: 50,
+        elevation: 3,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.5,
+        shadowRadius: 4,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    checkoutButtonText: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: 'white',
     },
 });
