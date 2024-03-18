@@ -10,7 +10,7 @@ export default function Navbar({ firstIconName, labelName, lastIconName, leftHan
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.iconContainer} onPress={leftHandle}>
-                <Icon name={firstIconName} size={30} style={styles.icon} />
+                <Icon name={firstIconName} size={28} style={styles.icon} />
             </TouchableOpacity>
             {labelName ? (
                 <Text style={styles.labelText}>{labelName}</Text>
@@ -18,7 +18,7 @@ export default function Navbar({ firstIconName, labelName, lastIconName, leftHan
                 <Image source={Logoimg} style={styles.logoImage} />
             )}
             <TouchableOpacity style={styles.iconContainer} onPress={() => { navigation.navigate("Cart") }}>
-                <Icon name={lastIconName} size={30} style={styles.icon} />
+                <Icon name={lastIconName} size={28} style={styles.icon} />
                 {cartCount > 0 && (
                     <View style={styles.badge}>
                         <Text style={styles.badgeText}>{cartCount}</Text>
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     },
     labelText: {
         color: 'black',
-        fontSize: 25,
+        fontSize: 22,
         marginTop: 5,
         fontFamily: 'Poppins-SemiBold',
     },

@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         flexDirection: "column",
         width: "100%",
-        height: 230,
     },
     cardContent: {
         flexDirection: "row",

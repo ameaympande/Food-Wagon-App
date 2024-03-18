@@ -8,6 +8,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch, useSelector } from 'react-redux';
 import { setEmail, setUserId } from '../redux/features/profile/profileSlice';
 import { getData } from '../helper/getData';
+import Toast from 'react-native-toast-message';
 
 const Login = () => {
     const profile = useSelector((state) => state.profile);
@@ -76,17 +77,29 @@ const Login = () => {
             const response = await LoginAPI(credentials);
             console.log(response.data);
             if (response) setLoading(false);
-            if (response.data.error) setResponse(response.data.error);
+            if (response.data.error) {
+                Toast.show({
+                    type: 'error',
+                    text1: response.data.error
+                })
+            }
             if (response.data.token) {
                 if (response.data.userId) dispatch(setUserId(response.data.userId));
                 dispatch(setEmail(credentials.email));
                 await AsyncStorage.setItem("token", response.data.token)
                 navigation.replace("BottomTabNavigator");
+                Toast.show({
+                    type: 'success',
+                    text1: 'Logged in success.',
+                })
             }
         } catch (error) {
             console.error("Login failed:", error);
-            Alert.alert("An error occurred. Please try again later.");
             setLoading(false);
+            Toast.show({
+                type: 'error',
+                text1: error
+            })
         } finally {
             setLoading(false);
         }
@@ -97,7 +110,6 @@ const Login = () => {
             <ImageBackground source={bg} style={styles.background}>
                 <View style={styles.container}>
                     <Text style={styles.mainlabel}>Login</Text>
-
                     <TextInput
                         style={styles.input}
                         placeholder="Email"
@@ -122,7 +134,6 @@ const Login = () => {
                     </View>
                     {errors.password ? <Text style={styles.error}>{errors.password}</Text> : null}
 
-                    {response ? <Text style={styles.error}>{response}</Text> : null}
 
                     <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
                         <Text style={styles.accountlabel}>Don't have an account? <Text style={styles.accountlabelSignup}>Sign up</Text></Text>

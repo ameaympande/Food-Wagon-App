@@ -5,6 +5,7 @@ import StarRating from '../../components/StartRating';
 import { useNavigation } from '@react-navigation/native';
 import { setCartItems } from '../redux/features/profile/profileSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import Toast from 'react-native-toast-message';
 
 export default function ProductDetail({ route }) {
     const profile = useSelector((state) => state.profile);
@@ -22,6 +23,10 @@ export default function ProductDetail({ route }) {
     const handleIncrement = () => {
         setCount(prevCount => prevCount + 1);
         dispatch(setCartItems(item))
+        Toast.show({
+            type: 'success',
+            text1: 'Item added to Cart',
+        });
     };
 
     const handleDecrement = () => {

@@ -8,6 +8,7 @@ import SpecialOfferSection from '../../components/sections/SpecialOfferSection';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector } from 'react-redux';
+import Toast from 'react-native-toast-message';
 
 const data = [
     { id: 1, name: "Meals" },
@@ -16,6 +17,15 @@ const data = [
     { id: 4, name: "Drinks" },
     { id: 5, name: "Salads" }
 ];
+const toastConfig = {
+    success: ({ text1, text2, ...rest }) => (
+        <SafeAreaView style={styles.toastContainer}>
+            <Text style={styles.toastText1}>{text1}</Text>
+            <Text style={styles.toastText2}>{text2}</Text>
+        </SafeAreaView>
+    ),
+    error: () => { },
+};
 
 const HomeScreen = () => {
     const profile = useSelector((state) => state.profile)
@@ -46,18 +56,32 @@ const HomeScreen = () => {
         console.log("data", data);
         console.log("profile", profile);
     }
+
     async function getRestaurantData() {
         try {
-            const response = await GetMenuAPI();
-            if (response) {
-                setPopularItemData(response);
+            const data = await Promise.race([GetMenuAPI(), new Promise((_, reject) => setTimeout(() => reject("Timeout"), 7000))]);
+            if (data) {
+                console.log("Data:", data);
+                setPopularItemData(data);
+
             } else {
-                console.error("Invalid response from API:", response);
+                console.error("API request timed out");
+                Toast.show({
+                    type: 'error',
+                    text1: 'Error while fetching data',
+                    text2: 'Please make sure you are connected to internet.'
+                });
             }
         } catch (error) {
             console.error("Error fetching data:", error);
+            Toast.show({
+                type: 'error',
+                text1: 'Error while fetching data',
+                text2: error
+            });
         }
     }
+
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar backgroundColor="white" barStyle="dark-content" />
@@ -84,7 +108,7 @@ const HomeScreen = () => {
                 </View>
                 <View>
                     <Text style={styles.mainLabel}>Today's Special Offer</Text>
-                    <View style={{ alignItems: "center", padding: 10, }}>
+                    <View style={{ alignItems: "center", paddingHorizontal: 10, }}>
                         <SpecialOfferSection />
                     </View>
                 </View>
@@ -182,17 +206,18 @@ const styles = StyleSheet.create({
     },
     pcontainer: {
         flexDirection: "row",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        marginTop: 5,
 
     },
     mainLabel: {
         fontFamily: "Poppins-Bold",
         fontSize: 20,
-        padding: 15,
+        paddingTop: 10,
+        paddingHorizontal: 15,
         color: "black"
     },
     Label: {
-        marginTop: 5,
         fontFamily: "Poppins-Regular",
         fontSize: 16,
         padding: 15,

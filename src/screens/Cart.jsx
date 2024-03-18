@@ -19,7 +19,7 @@ export default function Cart() {
         }, 0);
         setTotalPrice(totalPrice)
 
-    }, [handleIncrement, handleDecrement])
+    }, [handleIncrement, handleDecrement, handleDelete])
 
     console.log(cartItems);
     const handleDelete = (currentItem) => {
@@ -108,19 +108,20 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-Regular',
     },
     listContainer: {
+        gap: 10,
         paddingHorizontal: 14,
         paddingBottom: 80,
+        // backgroundColor: "#F0E68C",
     },
     card: {
         flex: 1,
-        // backgroundColor: "#F0E68C",
         alignItems: "center",
         height: 110,
         flexDirection: 'row',
         justifyContent: "space-between",
         backgroundColor: '#fff',
         borderRadius: 10,
-        elevation: 2,
+        elevation: 5,
         position: 'relative',
         padding: 5
     },
@@ -146,6 +147,7 @@ const styles = StyleSheet.create({
         color: 'black',
     },
     cardPrice: {
+        marginRight: 25,
         fontWeight: 'bold',
         fontSize: 20,
         color: 'black',
@@ -167,13 +169,12 @@ const styles = StyleSheet.create({
     delete: {
         position: 'absolute',
         right: 5,
-        top: 2,
+        top: 0,
         backgroundColor: 'rgba(255,255,255,0.7)',
-        borderRadius: 20,
-        padding: 8,
+        paddingTop: 5
     },
     icon: {
-        color: '#777',
+        color: 'red',
     },
     checkoutButton: {
         width: "75%",
@@ -195,7 +196,7 @@ const styles = StyleSheet.create({
         borderColor: "orange",
         borderWidth: 3,
         paddingHorizontal: 40,
-        paddingVertical: 12,
+        paddingVertical: 10,
         borderRadius: 50,
         elevation: 3,
         shadowColor: '#000',
@@ -255,13 +256,10 @@ const styles = StyleSheet.create({
         paddingBottom: 0,
     },
     CheckoutContainer: {
-        marginTop: 25,
+        marginTop: 18,
         alignItems: "center",
         gap: 10
     }
-
-
-
 
 
 });
