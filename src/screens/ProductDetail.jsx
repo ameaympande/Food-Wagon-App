@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '../../components/Navbar';
 import StarRating from '../../components/StartRating';
 import { useNavigation } from '@react-navigation/native';
-import { setCartItems } from '../redux/features/profile/profileSlice';
+import { decrementCartItem, setCartItems } from '../redux/features/profile/profileSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import Toast from 'react-native-toast-message';
 
@@ -17,8 +17,10 @@ export default function ProductDetail({ route }) {
 
     useEffect(() => {
         const filterItem = cartItems.find((rec) => item._id === rec._id)
+        console.log("filterItem", filterItem);
+        console.log("cartItems", cartItems);
         if (filterItem) setCount(filterItem.quantity)
-    }, [cartItems, count])
+    }, [cartItems])
 
     const handleIncrement = () => {
         setCount(prevCount => prevCount + 1);
@@ -31,9 +33,8 @@ export default function ProductDetail({ route }) {
 
     const handleDecrement = () => {
         if (count <= 0) return;
-        const exist = cartItems.filter((dish) => dish._id === item._id);
-        console.log("exist", exist);
         setCount(prevCount => prevCount - 1);
+        dispatch(decrementCartItem(item._id))
     };
 
 

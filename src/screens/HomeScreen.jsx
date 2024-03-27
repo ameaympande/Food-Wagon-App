@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, ActivityIndicator, ScrollView, StatusBar } from 'react-native';
+import { FlatList, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, ActivityIndicator, ScrollView, StatusBar, RefreshControl, Vibration } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Navbar from '../../components/Navbar';
 import PopularItem from '../../components/sections/PopularItem';
@@ -31,7 +31,9 @@ const HomeScreen = () => {
     const profile = useSelector((state) => state.profile)
     const navigation = useNavigation();
     const [selectedItem, setSelectedItem] = useState(data[0]?.id);
-    const [popularItemData, setPopularItemData] = useState(null)
+    const [popularItemData, setPopularItemData] = useState(null);
+    const [refreshing, setRefreshing] = useState(false);
+
 
 
     const renderItem = ({ item }) => (
@@ -82,10 +84,24 @@ const HomeScreen = () => {
         }
     }
 
+    const onRefresh = () => {
+        setRefreshing(true);
+        getRestaurantData();
+        setRefreshing(false);
+        Vibration.vibrate();
+    };
     return (
         <SafeAreaView style={styles.container}>
-            <StatusBar backgroundColor="white" barStyle="dark-content" />
-            <ScrollView alwaysBounceVertical={true} automaticallyAdjustKeyboardInsets={true} keyboardDismissMode="on-drag">
+            <ScrollView
+                alwaysBounceVertical={true}
+                automaticallyAdjustKeyboardInsets={true}
+                keyboardDismissMode="on-drag"
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }>
                 <Navbar firstIconName="bars" lastIconName="shoppingcart" cartCount={profile.cartItems.length} leftHandle={() => navigation.toggleDrawer()} />
                 <View style={styles.content}>
                     <Text style={styles.title}>What would you like to <Text style={styles.orangeText}>eat?</Text></Text>
@@ -131,7 +147,7 @@ const styles = StyleSheet.create({
     },
     content: {
         alignItems: 'center',
-        padding: 8,
+        paddingHorizontal: 8,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
@@ -170,16 +186,16 @@ const styles = StyleSheet.create({
         color: 'orange',
     },
     breakline: {
-        marginTop: "5%",
+        marginTop: "3%",
         width: "150%",
         height: 3,
-        backgroundColor: "grey"
+        backgroundColor: "grey",
+        marginBottom: 5
     },
     bottomContentContainer: {
         backgroundColor: 'white',
         justifyContent: 'flex-start',
         paddingHorizontal: 10,
-        maxHeight: 250
     },
     card: {
         marginRight: 10,

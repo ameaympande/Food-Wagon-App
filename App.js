@@ -7,7 +7,7 @@ import DrawerContent from './src/navigation/DrawerContent';
 import initializeStore from './src/redux/store';
 import Toast from 'react-native-toast-message';
 import AppNavigator from './src/navigation/AppNavigator';
-import {Text, View} from 'react-native';
+import {StatusBar, Text, View} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'; // Or your preferred icon set
 
 const toastConfig = {
@@ -134,6 +134,7 @@ const App = () => {
     <>
       <Provider store={store}>
         <NavigationContainer>
+          <StatusBar backgroundColor="#F5F5F5" barStyle="dark-content" />
           <DrawerNav />
           <Toast config={toastConfig} />
         </NavigationContainer>

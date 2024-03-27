@@ -74,7 +74,7 @@ const Login = () => {
         }
 
         try {
-            const response = await LoginAPI(credentials);
+            const response = await Promise.race([LoginAPI(credentials), new Promise((_, reject) => setTimeout(() => reject("Timeout"), 7000))]);
             console.log(response.data);
             if (response) setLoading(false);
             if (response.data.error) {

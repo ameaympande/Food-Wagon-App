@@ -4,7 +4,7 @@ import Navbar from '../../components/Navbar';
 import Icon from 'react-native-vector-icons/Entypo';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { replaceCartItems, setCartItems } from '../redux/features/profile/profileSlice';
+import { decrementCartItem, replaceCartItems, setCartItems } from '../redux/features/profile/profileSlice';
 
 export default function Cart() {
     const profile = useSelector((state) => state.profile);
@@ -19,24 +19,18 @@ export default function Cart() {
         }, 0);
         setTotalPrice(totalPrice)
 
-    }, [handleIncrement, handleDecrement, handleDelete])
+    }, [handleDelete, cartItems])
 
-    console.log(cartItems);
+
     const handleDelete = (currentItem) => {
-        console.log(currentItem);
         const updatedCartItems = cartItems.filter(item => item._id !== currentItem._id);
         dispatch(replaceCartItems(updatedCartItems));
 
     }
 
-    const handleIncrement = (item) => {
-        dispatch(setCartItems(item))
-    };
-
-    const handleDecrement = (item) => {
-        dispatch(setCartItems(item));
-
-    };
+    const handleCheckout = () => {
+        navigation.navigate("DeliverTo", { data: cartItems });
+    }
 
     const renderItem = ({ item }) => (
         <ScrollView>
@@ -44,15 +38,7 @@ export default function Cart() {
                 <Image source={{ uri: item.backgroundImage }} style={styles.image} />
                 <Text style={styles.itemName}>{item.name}</Text>
                 <View style={styles.innercontainer}>
-                    <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.button} onPress={() => handleDecrement(item)}>
-                            <Text style={styles.buttonText}>-</Text>
-                        </TouchableOpacity>
-                        <Text style={styles.text}>{item.quantity}</Text>
-                        <TouchableOpacity style={styles.button} onPress={() => handleIncrement(item)}>
-                            <Text style={styles.buttonText}>+</Text>
-                        </TouchableOpacity>
-                    </View>
+                    <Text style={styles.qtyText}>Qty - {item.quantity}</Text>
                 </View>
                 <Text style={styles.cardPrice}>₹ {item.price}</Text>
                 <Text onPress={() => handleDelete(item)} style={styles.delete}>
@@ -88,7 +74,7 @@ export default function Cart() {
                         <Text style={styles.AddItemButtonText}>Add Items</Text>
                     </TouchableOpacity>
                     {cartItems.length > 0 &&
-                        <TouchableOpacity onPress={() => {/* Handle checkout */ }} style={styles.checkoutButton} >
+                        <TouchableOpacity onPress={handleCheckout} style={styles.checkoutButton} >
                             <Text style={styles.checkoutButtonText}>Checkout</Text>
                         </TouchableOpacity>
                     }
@@ -153,11 +139,14 @@ const styles = StyleSheet.create({
         color: 'black',
     },
     infoContainer: {
-
         flexDirection: "row-reverse"
     },
     infoText: {
         fontSize: 16,
+        color: 'grey',
+    },
+    qtyText: {
+        fontSize: 18,
         color: 'grey',
     },
     totalPrice: {

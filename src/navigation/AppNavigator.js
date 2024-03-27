@@ -7,6 +7,8 @@ import BottomTabNavigator from './BottomTabNavigator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Cart from '../screens/Cart';
 import ProductDetail from '../screens/ProductDetail';
+import DeliverTo from '../screens/DeliverTo';
+import ProgressBar from '../../components/ProgressBar';
 
 const Stack = createStackNavigator();
 
@@ -56,6 +58,7 @@ const AppNavigator = () => {
           name="BottomTabNavigator"
           component={BottomTabNavigator}
         />
+        <Stack.Screen name="DeliverTo" component={ProgressBar} />
       </Stack.Navigator>
     </>
   );
