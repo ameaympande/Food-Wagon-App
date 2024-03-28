@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native';
 import CustomRadioBtn from './CustomRadioBtn';
 import { RadioButton } from 'react-native-paper';
 import DatePicker from '@react-native-community/datetimepicker';
+import Toast from 'react-native-toast-message';
 
 const PaymentDetails = () => {
-    const [date, setDate] = useState(new Date())
     const [open, setOpen] = useState(false)
     const [form, setForm] = useState({
         option: "",
@@ -14,24 +14,59 @@ const PaymentDetails = () => {
         expDate: new Date(),
         cvv: "",
     });
-    const [selectedValue, setSelectedValue] = useState("")
     const [payDelivery, setPayDelivery] = useState("option2");
 
-    const handleRadioClick = () => {
+    useEffect(() => {
+
+        if (payDelivery === "option1") {
+            setForm({
+                option: "",
+                cardNumber: "",
+                NameOnCard: "",
+                expDate: new Date(),
+                cvv: "",
+
+            });
+        }
+    }, [payDelivery])
+
+    const handleOrderClick = async () => {
+        console.log(form);
+        if (payDelivery === "option2") {
+            if (!form.option || !form.cardNumber || !form.cardNumber.length === 19 || !form.NameOnCard || !form.expDate || !form.cvv) {
+                Toast.show({
+                    type: "error",
+                    text1: "Please Fill all the Details"
+                });
+            }
+        } else {
+
+        }
 
     }
 
     const toggleRadioButton = (option) => {
         const newOption = form.option === option ? "" : option;
+        console.log(newOption);
         setForm({ ...form, option: newOption });
     };
 
     const onChangeDate = (event, selectedDate) => {
-        const currentDate = selectedDate || date;
+        const currentDate = selectedDate || form.expDate;
         setOpen(false);
-        setDate(currentDate);
-        setForm({ ...form, expDate: currentDate });
+
     };
+
+    const formatCardNumber = (text) => {
+        let formattedText = text.replace(/\D/g, '');
+        const groups = formattedText.match(/.{1,4}/g);
+
+        if (groups) {
+            formattedText = groups.join('-');
+        }
+        setForm({ ...form, cardNumber: formattedText });
+    };
+
 
     return (
         <View style={styles.stepContent}>
@@ -68,7 +103,7 @@ const PaymentDetails = () => {
                 </View>
                 <View style={styles.cardcontainer}>
                     <Text style={styles.labelText}>CARD NUMBER</Text>
-                    <TextInput style={styles.input} placeholder='' value={form.cardNumber} onChangeText={(text) => setForm({ ...form, cardNumber: text })} />
+                    <TextInput style={styles.input} maxLength={19} placeholder='' value={form.cardNumber} onChangeText={formatCardNumber} />
                 </View>
                 <View style={styles.cardcontainer}>
                     <Text style={styles.labelText}>NAME ON CARD</Text>
@@ -125,7 +160,7 @@ const PaymentDetails = () => {
             </View>
 
             <View style={styles.proceedContainer}>
-                <TouchableOpacity style={styles.prceedBtn} >
+                <TouchableOpacity style={styles.prceedBtn} onPress={handleOrderClick} >
                     <Text style={styles.buttonText}>Complete Order</Text>
                 </TouchableOpacity>
             </View>
