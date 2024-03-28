@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import CustomRadioBtn from './CustomRadioBtn';
 import { useDispatch, useSelector } from 'react-redux';
 import { setProfile } from '../src/redux/features/profile/profileSlice';
 import CountryPicker from 'react-native-country-picker-modal'
+import OrderSummary from './OrderSummary';
+import Toast from 'react-native-toast-message';
 
 const ProgressBar = () => {
     const profile = useSelector((state) => state.profile);
@@ -19,9 +21,29 @@ const ProgressBar = () => {
         countryCode: "IN"
     });
 
-    console.log("dispatched", selectedValue);
+    useEffect(() => {
+        if (selectedValue === "option1") {
+            setForm({
+                name: profile.firstName + ' ' + profile.lastName,
+                address: profile.address,
+                city: profile.city,
+                phoneNumber: profile.phoneNumber,
+                countryCode: "IN"
+            });
+        } else {
+            setForm({
+                name: '',
+                address: '',
+                city: '',
+                phoneNumber: '',
+                countryCode: "IN"
+            })
+        }
+    }, [selectedValue])
+
     const handleRadioClick = () => {
         if (profile) {
+            console.log("dispatched", profile);
             setForm({
                 name: profile.firstName + ' ' + profile.lastName,
                 address: profile.address,
@@ -32,21 +54,21 @@ const ProgressBar = () => {
         }
     };
     const handleNextStep1 = () => {
+        if (!form.name || !form.address || !form.city || !form.phoneNumber || !profile) {
+            Toast.show({
+                type: 'error',
+                text1: 'Please fill in all required fields or provide profile data.',
+            });
+            return;
+        }
         dispatch(setProfile({
             firstName: form.name,
             address: form.address,
             city: form.city,
             phoneNumber: form.phoneNumber,
         }));
-        console.log("dispatched", profile);
         setCurrentStep(currentStep + 1);
-        setForm({
-            name: '',
-            address: '',
-            city: '',
-            phoneNumber: '',
-            countryCode: "IN"
-        })
+
     };
     return (
         <View style={styles.container}>
@@ -59,19 +81,19 @@ const ProgressBar = () => {
                     <View style={styles.stepContent}>
                         <Text style={styles.deliveryText}>Enter Delivery Address</Text>
                         <View style={styles.labelContainer}>
-                            <Text style={styles.labelText}>Name :</Text>
+                            <Text style={styles.labelText}>Name* :</Text>
                             <TextInput style={styles.input} value={form.name} onChangeText={(text) => setForm({ ...form, name: text })} />
                         </View>
                         <View style={styles.labelContainer}>
-                            <Text style={styles.labelText}>Address :</Text>
+                            <Text style={styles.labelText}>Address* :</Text>
                             <TextInput style={styles.input} placeholder='' value={form.address} onChangeText={(text) => setForm({ ...form, address: text })} />
                         </View>
                         <View style={styles.labelContainer}>
-                            <Text style={styles.labelText}>City :</Text>
+                            <Text style={styles.labelText}>City* :</Text>
                             <TextInput style={styles.input} placeholder='' value={form.city} onChangeText={(text) => setForm({ ...form, city: text })} />
                         </View>
                         <View style={styles.labelContainer}>
-                            <Text style={styles.labelText}>Phone :</Text>
+                            <Text style={styles.labelText}>Phone* :</Text>
                             <View style={styles.phoneInputContainer}>
                                 <CountryPicker
                                     countryCode={form.countryCode}
@@ -107,19 +129,20 @@ const ProgressBar = () => {
                             </TouchableOpacity>
 
                         </View>
+
                     </View>
                 </ProgressStep>
 
                 <ProgressStep
                     label="Step 2"
-                    nextBtnTextStyle={styles.buttonText}
-                    nextBtnStyle={styles.button}
-                    previousBtnStyle={styles.previousBtnStyle}
-                    previousBtnTextStyle={styles.buttonText}
+                    removeBtnRow={true}
                 >
                     <View style={styles.stepContent}>
-                        <Text style={styles.stepText}>This is the content within step 2!</Text>
+                        <OrderSummary currentStep={currentStep} setCurrentStep={setCurrentStep} data={profile.cartItems} />
                     </View>
+
+
+
                 </ProgressStep>
                 <ProgressStep
                     label="Step 3"
@@ -157,7 +180,7 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     button: {
-        width: "75%",
+        // width: "75%",
         backgroundColor: "orange",
         paddingHorizontal: 40,
         paddingVertical: 12,
@@ -286,7 +309,7 @@ const styles = StyleSheet.create({
     },
     phoneInputContainer: {
         flexDirection: "row"
-    }
+    },
 
 });
 
