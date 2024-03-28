@@ -1,9 +1,10 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import bg from "../src/public/bowl.png"
 
-const OrderSummary = ({ currentStep, setCurrentStep, data }) => {
+const OrderSummary = ({ currentStep, setCurrentStep, profile }) => {
+    const data = profile?.cartItems
     const navigation = useNavigation();
     const [deliveryFee, setDeliveryFee] = useState(0);
     console.log(data);
@@ -18,24 +19,26 @@ const OrderSummary = ({ currentStep, setCurrentStep, data }) => {
         <>
             <View style={styles.ordercard}>
                 <Text style={styles.orderText}>Order Details</Text>
-                {data && data.map((item, index) => (
-                    <View key={index}>
-                        <View style={styles.itemcontainer}>
-                            <View style={styles.descontainer}>
-                                <Image source={{ uri: item.backgroundImage }} style={styles.image} />
-                                <View style={{ marginLeft: 15, paddingTop: 5, gap: 5 }}>
-                                    <Text style={styles.itemNameText}>{item.name}</Text>
-                                    <Text style={styles.priceqtyText}>{item.price} X {item.quantity}</Text>
+                <ScrollView>
+                    {data && data.map((item, index) => (
+                        <View key={index}>
+                            <View style={styles.itemcontainer}>
+                                <View style={styles.descontainer}>
+                                    <Image source={{ uri: item.backgroundImage }} style={styles.image} />
+                                    <View style={{ marginLeft: 15, paddingTop: 5, gap: 5 }}>
+                                        <Text style={styles.itemNameText}>{item.name}</Text>
+                                        <Text style={styles.priceqtyText}>{item.price} X {item.quantity}</Text>
+                                    </View>
+                                </View>
+                                <View style={styles.pricecontainer}>
+                                    <Text style={styles.priceText}>₹ {item.price * item.quantity}</Text>
                                 </View>
                             </View>
-                            <View style={styles.pricecontainer}>
-                                <Text style={styles.priceText}>₹ {item.price * item.quantity}</Text>
-                            </View>
-                        </View>
-                        <View style={styles.breakline} />
+                            <View style={styles.breakline} />
 
-                    </View>
-                ))}
+                        </View>
+                    ))}
+                </ScrollView>
                 <View style={styles.itemcontainer}>
                     <Text style={styles.priceTotalText}>Sub total :</Text>
                     <Text style={styles.priceTotalText}>₹ {subtotal}</Text>
@@ -52,10 +55,23 @@ const OrderSummary = ({ currentStep, setCurrentStep, data }) => {
 
             <View style={[styles.ordercard, { marginTop: 10, padding: 15 }]} >
                 <Text style={styles.priceText}>Delivery Address</Text>
-                <View style={[styles.itemcontainer, { paddingTop: 10 }]}>
-                    <Text style={styles.priceTotalText}>Delivery fee :</Text>
-                    <Text style={styles.priceTotalText}>₹ {deliveryFee}</Text>
+                <View style={[styles.addresscontainer, { paddingTop: 10 }]}>
+                    <Text style={styles.priceTotalText}>Name :</Text>
+                    <Text style={[styles.priceTotalText, { marginLeft: 50, fontWeight: "500" }]}>{profile.firstName + profile.lastName}</Text>
                 </View>
+                <View style={[styles.addresscontainer, { paddingTop: 10 }]}>
+                    <Text style={styles.priceTotalText}>Address :</Text>
+                    <Text style={[styles.priceTotalText, { marginLeft: 30, fontWeight: "500" }]}> {profile.address}</Text>
+                </View>
+                <View style={[styles.addresscontainer, { paddingTop: 10 }]}>
+                    <Text style={styles.priceTotalText}>City :</Text>
+                    <Text style={[styles.priceTotalText, { marginLeft: 70, fontWeight: "500" }]}>{profile.city}</Text>
+                </View>
+                <View style={[styles.addresscontainer, { paddingTop: 10 }]}>
+                    <Text style={styles.priceTotalText}>Phone :</Text>
+                    <Text style={[styles.priceTotalText, { marginLeft: 50, fontWeight: "500" }]}>{profile.phoneNumber}</Text>
+                </View>
+
 
             </View>
 
@@ -105,6 +121,12 @@ const styles = StyleSheet.create({
         padding: 5,
         paddingTop: 20,
     },
+    addresscontainer: {
+        flex: 1,
+        flexDirection: "row",
+        padding: 5,
+        paddingTop: 20,
+    },
     itemNameText: {
         fontSize: 14,
         color: "black",
@@ -115,7 +137,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold"
     },
     priceTotalText: {
-        fontSize: 16,
+        fontSize: 17,
         color: "black",
         fontWeight: "400"
 
@@ -147,7 +169,7 @@ const styles = StyleSheet.create({
     bottomCard: {
         flex: 1,
         height: "27%",
-        // marginTop: "105%",
+        marginBottom: 20,
         borderTopLeftRadius: 15,
         borderRadius: 12,
         // elevation: 2,

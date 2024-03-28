@@ -16,7 +16,7 @@ const CustomRadioBtn = ({ selectedValue, setSelectedValue, handleRadioClick }) =
     const toggleRadioButton = () => {
         const newValue = selectedValue === 'option1' ? 'option2' : 'option1';
         setSelectedValue(newValue);
-        if (newValue === "option1") handleRadioClick();
+        if (newValue === "option1" && handleRadioClick) handleRadioClick();
     };
 
     return (

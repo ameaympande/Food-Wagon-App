@@ -15,7 +15,7 @@ export default function Cart() {
 
     useEffect(() => {
         const totalPrice = cartItems.reduce((accumulator, item) => {
-            return accumulator += item.price
+            return accumulator += (item.price * item.quantity)
         }, 0);
         setTotalPrice(totalPrice)
 
